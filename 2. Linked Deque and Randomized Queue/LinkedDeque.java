@@ -1,24 +1,33 @@
 import java.util.Iterator;
 
-public class LinkedDeque<Item> implements Iterable<Item>
-{
+public class LinkedDeque<Item> implements Iterable<Item> {
+
+    private int n;
     private Node first, last;
     
-    private class Node
-    { 
+    private class Node { 
         Item item;
         Node next; 
+    }
+
+    public LinkedDeque() {
+
+        first = null;
+        last = null;
+        n = 0;
+
     }
 
     public boolean isEmpty()
     { return first == null; }
     
-    public void addFirst(Item item)
-    {
+    public void addFirst(Item item) {
+
         if (item == null) {
             throw new IllegalArgumentException();
         }
 
+        n++;
         Node oldfirst = first;
         first = new Node();
         first.item = item;
@@ -26,38 +35,43 @@ public class LinkedDeque<Item> implements Iterable<Item>
      
     }
 
-    public void addLast(Item item)
-    {
+    public void addLast(Item item) {
+
         if (item == null) {
             throw new IllegalArgumentException();
         }
 
+        n++;
         Node oldlast = last;
         last = new Node();
         last.item = item;
         last.next = null;
         if (isEmpty()) first = last;
         else oldlast.next = last;
+
     }
     
-    public Item removeFirst()
-    {
+    public Item removeFirst() {
+
         if (isEmpty()) {
             throw new java.util.NoSuchElementException();
         }
 
+        n--;
         Item item = first.item;
         first = first.next;
         if (isEmpty()) last = null;
         return item;
+
     }
 
-    public Item removeLast()
-    {
+    public Item removeLast() {
+
         if (isEmpty()) {
             throw new java.util.NoSuchElementException();
         }
 
+        n--;
         Node oldlast = last;
         Item item = oldlast.item; 
         oldlast = null;
@@ -74,13 +88,12 @@ public class LinkedDeque<Item> implements Iterable<Item>
 
     public Iterator<Item> iterator() { return new ListIterator(); }
 
-    private class ListIterator implements Iterator<Item>
-    {
+    private class ListIterator implements Iterator<Item> {
  	    private Node current = first;
  	    public boolean hasNext() { return current != null; }
  	    public void remove() { throw new UnsupportedOperationException(); }
- 	    public Item next()
-        {
+ 	    public Item next() {
+
             if (!hasNext()) {
                 throw new java.util.NoSuchElementException();
             }
@@ -91,20 +104,10 @@ public class LinkedDeque<Item> implements Iterable<Item>
 	    }
     }
 
-    public int size()
-    {
-        int count = 1;
-        Node current = first;
-        while (current.next != null) 
-        {
-            current = current.next;
-            count++; 
-        } 
-        return count;
-    }
+    public int size() { return n; }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
+
         LinkedDeque<String> test = new LinkedDeque<String>();
         String a = "One";
         test.addLast(a);
